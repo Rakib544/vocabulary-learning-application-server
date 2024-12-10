@@ -15,6 +15,8 @@ model User {
   photoUrl  String
   role      UserRole @default(USER)
   vocabularies Vocabulary[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
    @@map("user")
 }
 
@@ -23,6 +25,8 @@ model Lesson {
   name        String
   lessonNo    Int          @unique
   vocabularies Vocabulary[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
    @@map("lesson")
 }
 
@@ -32,10 +36,12 @@ model Vocabulary {
   pronunciation String
   meaning      String
   whenToSay    String
-  lessonId     String   @db.ObjectId
-  lesson       Lesson   @relation(fields: [lessonId], references: [id])
+  lessonId     String?   @db.ObjectId
+  lesson       Lesson?   @relation(fields: [lessonId], references: [id], onDelete: SetNull)
   userId       String   @db.ObjectId
   user         User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
    @@map("vocabulary")
 }
 
@@ -43,6 +49,8 @@ model Tutorial {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   url         String
   title       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
    @@map("tutorial")
 }
 
