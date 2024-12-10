@@ -9,8 +9,8 @@ export default class AuthRepository {
   }
 
   public async createUser(
-    user: Omit<User, 'id' | 'role'>
-  ): Promise<Omit<User, 'password'>> {
+    user: Omit<User, 'id' | 'role' | 'createdAt' | 'updatedAt'>
+  ): Promise<Omit<User, 'password' | 'createdAt' | 'updatedAt'>> {
     const newUser = await prisma.user.create({
       data: {
         name: user.name,

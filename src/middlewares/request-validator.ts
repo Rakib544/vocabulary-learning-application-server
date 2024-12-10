@@ -34,4 +34,19 @@ export default class RequestValidator {
       }
     };
   };
+
+  static isValidObjectId = () => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const id = req.params.id;
+        const isValid = /^[0-9a-fA-F]{24}$/.test(id);
+        if (!isValid) {
+          next(new HttpBadRequestError('Invalid ObjectId', []));
+        }
+        next();
+      } catch (e) {
+        next(new HttpBadRequestError('Invalid ObjectId', []));
+      }
+    };
+  };
 }
