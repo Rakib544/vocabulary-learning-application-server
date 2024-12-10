@@ -57,8 +57,7 @@ export default class LessonController extends Api {
   ) => {
     try {
       const id = req.params.id;
-      const updatedData = req.body;
-      const lesson = await this.lessonService.updateLesson(id, updatedData);
+      const lesson = await this.lessonService.updateLesson(id, req.body);
       this.send(res, lesson, HttpStatusCode.Ok, 'Lesson successfully updated');
     } catch (e) {
       next(e);
