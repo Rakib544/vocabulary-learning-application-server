@@ -2,17 +2,17 @@ import { HttpStatusCode } from 'axios';
 
 export interface IApiError extends Error {
   statusCode: number;
-  rawErrors?: string[];
+  errors?: string[];
 }
 
 export class ApiError extends Error implements IApiError {
   statusCode: number;
-  rawErrors: string[];
-  constructor(statusCode: number, message: string, rawErrors?: string[]) {
+  errors: string[];
+  constructor(statusCode: number, message: string, errors?: string[]) {
     super(message);
     this.statusCode = statusCode;
-    if (rawErrors) {
-      this.rawErrors = rawErrors;
+    if (errors) {
+      this.errors = errors;
     }
     Error.captureStackTrace(this, this.constructor);
   }

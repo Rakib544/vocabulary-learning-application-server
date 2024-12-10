@@ -1,14 +1,15 @@
-import util from 'util';
-import { type NextFunction, type Request, type Response } from 'express';
 import { HttpStatusCode } from 'axios';
+import { type NextFunction, type Request, type Response } from 'express';
+import util from 'util';
+
+import environment from '@/lib/environment';
 import { type ApiError } from '@/lib/errors';
 import logger from '@/lib/logger';
-import environment from '@/lib/environment';
 
 interface ErrorBody {
   success: false;
   message: string;
-  rawErrors?: string[];
+  errors?: string[];
   stack?: string;
 }
 
@@ -29,7 +30,7 @@ const errorHandler = (
   const errorBody: ErrorBody = {
     success: false,
     message: err.message,
-    rawErrors: err.rawErrors,
+    errors: err.errors,
   };
 
   if (environment.isDev()) {

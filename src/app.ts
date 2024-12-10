@@ -1,5 +1,5 @@
 import cors from 'cors';
-import express, { type Response } from 'express';
+import express from 'express';
 import expressJSDocSwagger from 'express-jsdoc-swagger';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -7,7 +7,6 @@ import nocache from 'nocache';
 
 import appConfig from './config/app.config';
 import expressJSDocSwaggerConfig from './config/express-jsdoc-swagger.config';
-import environment from './lib/environment';
 
 import prismaClient from '@/lib/prisma';
 import errorHandler from '@/middlewares/error-handler';
@@ -43,11 +42,8 @@ class App {
     const {
       api: { version },
     } = appConfig;
-    const { env } = environment;
-    this.express.use('/', (_, res: Response) => {
-      res.status(200).json({ message: 'Hello world' });
-    });
-    this.express.use(`/api/${version}/${env}`, routes);
+    // const { env } = environment;
+    this.express.use(`/api/${version}`, routes);
   }
 
   private setErrorHandler(): void {

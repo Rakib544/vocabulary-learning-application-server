@@ -1,6 +1,7 @@
 import { type ClassConstructor, plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
-import { type Request, type Response, type NextFunction } from 'express';
+import { type NextFunction, type Request, type Response } from 'express';
+
 import { HttpBadRequestError } from '@/lib/errors';
 import logger from '@/lib/logger';
 
@@ -13,6 +14,7 @@ export default class RequestValidator {
         const errors = await validate(
           convertedObject as Record<string, unknown>
         );
+
         if (!errors.length) {
           next();
           return;
