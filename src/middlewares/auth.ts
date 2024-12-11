@@ -1,3 +1,4 @@
+import { UserRole } from '@prisma/client';
 import { type NextFunction, type Request, type Response } from 'express';
 
 import { HttpForbiddenError, HttpUnAuthorizedError } from '@/lib/errors';
@@ -10,13 +11,12 @@ export const verifyAuthToken = async (
   _res: Response,
   next: NextFunction
 ) => {
-  const token = req.headers.authorization?.split(' ')[1];
-
-  if (!token) {
-    next(new HttpUnAuthorizedError('Unauthorized'));
-  }
-
   try {
+    const token = req.headers.authorization?.split(' ')[1];
+
+    if (!token) {
+      next(new HttpUnAuthorizedError('Unauthorized'));
+    }
     const user = jwt.verifyAccessToken(token as string);
     if (user) {
       (req as any).user = user;
@@ -34,10 +34,8 @@ export const verifyAdmin = async (
   res: Response,
   next: NextFunction
 ) => {
-  const userInfo = req?.user;
-  const isAdmin = ['ADMIN', 'USER'].includes(req?.user?.role);
-
-  if (!(userInfo && isAdmin)) {
+  const isAdmin = req?.user?.role === UserRole.ADMIN;
+  if (!isAdmin) {
     next(new HttpUnAuthorizedError('You do not have the permission to access'));
   }
   next();

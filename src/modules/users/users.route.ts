@@ -2,6 +2,7 @@ import { Router } from 'express';
 
 import UserController from './users.controller';
 
+import { verifyAdmin, verifyAuthToken } from '@/middlewares/auth';
 import RequestValidator from '@/middlewares/request-validator';
 
 const users: Router = Router();
@@ -30,9 +31,11 @@ const userController = new UserController();
  * @param {CreateUserBody} request.body.required
  * @return {User} 201 - user created
  */
-users.get('/', userController.getUsers);
+users.get('/', verifyAuthToken, verifyAdmin, userController.getUsers);
 users.put(
   '/:id/role',
+  verifyAuthToken,
+  verifyAdmin,
   RequestValidator.isValidObjectId(),
   userController.updateRole
 );
