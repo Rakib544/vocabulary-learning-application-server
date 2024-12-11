@@ -5,7 +5,7 @@ export class CreateTutorialDto {
   title: string;
 
   @IsString()
-  url: number;
+  url: string;
 }
 
 export class UpdateTutorialDto {
@@ -15,5 +15,5 @@ export class UpdateTutorialDto {
 
   @IsOptional()
   @IsString()
-  url: number;
+  url: string;
 }
