@@ -41,3 +41,9 @@ export class HttpNotFoundError extends ApiError {
     super(HttpStatusCode.NotFound, message, errors);
   }
 }
+
+export class HttpForbiddenError extends ApiError {
+  constructor(message: string, errors?: string[]) {
+    super(HttpStatusCode.Forbidden, message, errors);
+  }
+}

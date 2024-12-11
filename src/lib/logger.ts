@@ -2,14 +2,16 @@ import { existsSync, mkdirSync } from 'fs';
 import {
   createLogger,
   format,
-  type transport,
-  type Logger,
   type LogEntry,
+  type Logger,
+  type transport,
   transports,
 } from 'winston';
+
 import environment from './environment';
-import { LOG_DATE_FORMAT } from '@/utils/constants';
+
 import appConfig from '@/config/app.config';
+import { LOG_DATE_FORMAT } from '@/utils/constants';
 
 const {
   logs: { dir: logDir, logFile, errorLogFile },
