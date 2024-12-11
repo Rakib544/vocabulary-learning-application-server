@@ -21,7 +21,7 @@ export default class TutorialController extends Api {
         res,
         tutorial,
         HttpStatusCode.Created,
-        'Tutorial created successfully'
+        'Tutorial added successfully'
       );
     } catch (e) {
       next(e);
@@ -31,7 +31,12 @@ export default class TutorialController extends Api {
   public getTutorials = async (_, res: Response, next: NextFunction) => {
     try {
       const tutorials = await this.tutorialService.getTutorials();
-      this.send(res, tutorials, HttpStatusCode.Ok, 'Tutorial get successfully');
+      this.send(
+        res,
+        tutorials,
+        HttpStatusCode.Ok,
+        'Tutorials fetched successfully'
+      );
     } catch (e) {
       next(e);
     }

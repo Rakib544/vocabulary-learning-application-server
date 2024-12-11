@@ -15,12 +15,14 @@ export default class UserService {
   public async updateRole(id: string, role: UserRole) {
     if (!['USER', 'ADMIN'].includes(role)) {
       throw new HttpBadRequestError('Invalid role provided', [
-        'Role must be User or Admin',
+        `The role '${role}' is not valid. Valid roles are 'ADMIN', 'USER'.`,
       ]);
     }
     const user = await this.userRepository.getUser(id);
     if (!user) {
-      throw new HttpNotFoundError('User not found with this id');
+      throw new HttpNotFoundError('User not found', [
+        'User does not exists with the given ID',
+      ]);
     }
     return await this.userRepository.updateRole(id, role);
   }

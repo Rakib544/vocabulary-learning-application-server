@@ -15,7 +15,9 @@ export default class VocabularyService {
     const { lessonId } = vocabulary;
 
     if (!userId) {
-      throw new HttpBadRequestError('User id required', []);
+      throw new HttpBadRequestError('User id is required', [
+        `The 'userId' parameter is required to add a vocabulary.`,
+      ]);
     }
 
     const [lesson, user] = await Promise.all([
@@ -23,10 +25,14 @@ export default class VocabularyService {
       this.userRepository.getUser(userId),
     ]);
     if (!lesson) {
-      throw new HttpBadRequestError('Invalid lesson number', []);
+      throw new HttpNotFoundError('Lesson not found', [
+        'The lesson with the given ID does not exist.',
+      ]);
     }
     if (!user) {
-      throw new HttpBadRequestError('User id required', []);
+      throw new HttpNotFoundError('User not found', [
+        'The user with the given ID does not exist.',
+      ]);
     }
     return await this.vocabularyRepository.addVocabulary(userId, vocabulary);
   }
@@ -38,12 +44,20 @@ export default class VocabularyService {
   public async updateVocabulary(id: string, updatedData: Partial<Vocabulary>) {
     const vocabulary = await this.vocabularyRepository.getVocabulary(id);
     if (!vocabulary) {
-      throw new HttpNotFoundError('No vocabulary found with this id');
+      throw new HttpNotFoundError('Vocabulary not found', [
+        'The vocabulary with the given ID does not exists',
+      ]);
     }
     return await this.vocabularyRepository.updateVocabulary(id, updatedData);
   }
 
   public async deleteVocabulary(id: string) {
+    const vocabulary = await this.vocabularyRepository.getVocabulary(id);
+    if (!vocabulary) {
+      throw new HttpNotFoundError('Vocabulary not found', [
+        'The vocabulary with the given ID does not exists',
+      ]);
+    }
     return await this.vocabularyRepository.deleteVocabulary(id);
   }
 }

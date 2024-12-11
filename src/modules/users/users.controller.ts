@@ -17,7 +17,12 @@ export default class UserController extends Api {
   ) => {
     try {
       const users = await this.userService.getUsers();
-      this.send(res, users, HttpStatusCode.Ok, 'getUsers');
+      this.send(
+        res,
+        users,
+        HttpStatusCode.Ok,
+        'Users list fetched successfully'
+      );
     } catch (e) {
       next(e);
     }
@@ -31,7 +36,7 @@ export default class UserController extends Api {
     try {
       const id = req.params.id;
       const user = await this.userService.updateRole(id, req.body.role);
-      this.send(res, user, HttpStatusCode.Ok, 'Users updated successfully');
+      this.send(res, user, HttpStatusCode.Ok, 'User role updated successfully');
     } catch (e) {
       next(e);
     }

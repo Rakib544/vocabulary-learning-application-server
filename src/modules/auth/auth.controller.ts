@@ -17,7 +17,12 @@ export default class AuthController extends Api {
   ) => {
     try {
       const user = await this.authService.register(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'registerUser');
+      this.send(
+        res,
+        user,
+        HttpStatusCode.Created,
+        'User registered successfully'
+      );
     } catch (e) {
       next(e);
     }
@@ -30,7 +35,7 @@ export default class AuthController extends Api {
   ) => {
     try {
       const user = await this.authService.login(req.body);
-      this.send(res, user, HttpStatusCode.Ok, 'successful');
+      this.send(res, user, HttpStatusCode.Ok, 'Login successful');
     } catch (e) {
       next(e);
     }

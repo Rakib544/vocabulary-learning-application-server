@@ -14,7 +14,7 @@ lesson.post(
   verifyAuthToken,
   verifyAdmin,
   RequestValidator.validate(CreateLessonDto),
-  lessonController.createLesson
+  lessonController.addLesson
 );
 lesson.get('/', verifyAuthToken, lessonController.getLessons);
 lesson.get('/:lessonNo', verifyAuthToken, lessonController.getLesson);

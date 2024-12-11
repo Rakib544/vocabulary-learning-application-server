@@ -8,7 +8,7 @@ import logger from '@/lib/logger';
 export default class RequestValidator {
   static validate = <T>(classInstance: ClassConstructor<T>) => {
     return async (req: Request, _res: Response, next: NextFunction) => {
-      const validationErrorText = 'Request validation failed!';
+      const validationErrorText = 'Request validation failed';
       try {
         const convertedObject = plainToInstance(classInstance, req.body);
         const errors = await validate(
@@ -41,11 +41,19 @@ export default class RequestValidator {
         const id = req.params.id;
         const isValid = /^[0-9a-fA-F]{24}$/.test(id);
         if (!isValid) {
-          next(new HttpBadRequestError('Invalid ObjectId', []));
+          next(
+            new HttpBadRequestError('Invalid ObjectId format', [
+              'The provided ObjectId is not valid. It must be a 24-character hexadecimal string.',
+            ])
+          );
         }
         next();
       } catch (e) {
-        next(new HttpBadRequestError('Invalid ObjectId', []));
+        next(
+          new HttpBadRequestError('Invalid ObjectId format', [
+            'The provided ObjectId is not valid. It must be a 24-character hexadecimal string.',
+          ])
+        );
       }
     };
   };

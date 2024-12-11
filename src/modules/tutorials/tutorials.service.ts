@@ -18,7 +18,9 @@ export default class TutorialService {
   public async updateTutorial(id: string, updatedData: Tutorial) {
     const tutorial = await this.tutorialRepository.getTutorial(id);
     if (!tutorial) {
-      throw new HttpNotFoundError('Tutorial not found with this id');
+      throw new HttpNotFoundError('Tutorial not found', [
+        'The tutorial with the given ID does not exists',
+      ]);
     }
     const updatedTutorial = await this.tutorialRepository.updateTutorial(
       id,
@@ -30,7 +32,9 @@ export default class TutorialService {
   public async deleteTutorial(id: string) {
     const tutorial = await this.tutorialRepository.getTutorial(id);
     if (!tutorial) {
-      throw new HttpNotFoundError('Tutorial not found with this id');
+      throw new HttpNotFoundError('Tutorial not found', [
+        'The tutorial with the given ID does not exists',
+      ]);
     }
     const deletedTutorial = await this.tutorialRepository.deleteTutorial(id);
     return deletedTutorial;

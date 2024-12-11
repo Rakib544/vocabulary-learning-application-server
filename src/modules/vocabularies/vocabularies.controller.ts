@@ -38,7 +38,12 @@ export default class VocabularyController extends Api {
   ) => {
     try {
       const vocabularies = await this.vocabularyService.getVocabularies();
-      this.send(res, vocabularies, HttpStatusCode.Ok, 'Vocabularies');
+      this.send(
+        res,
+        vocabularies,
+        HttpStatusCode.Ok,
+        'Vocabularies fetched successfully'
+      );
     } catch (e) {
       next(e);
     }

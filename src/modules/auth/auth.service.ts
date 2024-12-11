@@ -2,7 +2,7 @@ import { type User } from '@prisma/client';
 
 import AuthRepository from './auth.repository';
 
-import { HttpBadRequestError } from '@/lib/errors';
+import { HttpBadRequestError, HttpConflictError } from '@/lib/errors';
 import Jwt from '@/lib/jwt';
 import PasswordManager from '@/lib/password';
 
@@ -57,8 +57,8 @@ export default class AuthService {
     const user = await this.authRepository.findUserByEmail(email);
 
     if (user) {
-      throw new HttpBadRequestError('An user already exists using this email', [
-        '',
+      throw new HttpConflictError('Email already exists', [
+        'The email address is already registered',
       ]);
     }
 

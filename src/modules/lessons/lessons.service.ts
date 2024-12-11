@@ -2,23 +2,26 @@ import { type Lesson } from '@prisma/client';
 
 import LessonRepository from './lessons.repository';
 
-import { HttpBadRequestError, HttpNotFoundError } from '@/lib/errors';
+import {
+  HttpBadRequestError,
+  HttpConflictError,
+  HttpNotFoundError,
+} from '@/lib/errors';
 
 export default class LessonService {
   private readonly lessonRepository = new LessonRepository();
 
-  public async createLesson(lesson: Lesson): Promise<Lesson> {
+  public async addLesson(lesson: Lesson): Promise<Lesson> {
     const isLessonExists = await this.lessonRepository.getLessonByLessonNumber(
       lesson.lessonNo
     );
 
     if (isLessonExists) {
-      throw new HttpBadRequestError(
-        'A lesson is already exists with this lesson number. Please try again with another lesson number',
-        []
-      );
+      throw new HttpConflictError('Lesson number already exists', [
+        'A lesson with this lesson number already exists',
+      ]);
     }
-    return await this.lessonRepository.createLesson(lesson);
+    return await this.lessonRepository.addLesson(lesson);
   }
 
   public async getLessons(): Promise<Lesson[]> {
@@ -34,7 +37,9 @@ export default class LessonService {
       lessonNo
     );
     if (!lesson) {
-      throw new HttpNotFoundError('Lesson not found with this lessonNo');
+      throw new HttpNotFoundError('Lesson not found', [
+        'The lesson with the given Lesson Number does not exists',
+      ]);
     }
     return lesson;
   }
@@ -43,7 +48,9 @@ export default class LessonService {
     const lesson = await this.lessonRepository.getLesson(id);
 
     if (!lesson) {
-      throw new HttpNotFoundError('Lesson not found with this id');
+      throw new HttpNotFoundError('Lesson not found', [
+        'The lesson with the given ID does not exists',
+      ]);
     }
 
     if (updatedData.lessonNo) {
@@ -53,10 +60,9 @@ export default class LessonService {
         );
 
       if (isLessonExists && lesson.id !== isLessonExists.id) {
-        throw new HttpBadRequestError(
-          'Another lesson exists with this lessonNo. ',
-          []
-        );
+        throw new HttpConflictError('Lesson number already exists', [
+          'A lesson with this lesson number already exists',
+        ]);
       }
     }
     const updatedLesson = await this.lessonRepository.updateLesson(
@@ -70,7 +76,9 @@ export default class LessonService {
     const lesson = await this.lessonRepository.getLesson(id);
 
     if (!lesson) {
-      throw new HttpNotFoundError('Lesson not found with this id');
+      throw new HttpNotFoundError('Lesson not found', [
+        'The lesson with the given ID does not exists',
+      ]);
     }
     const deletedLesson = await this.lessonRepository.deleteLesson(id);
     return deletedLesson;

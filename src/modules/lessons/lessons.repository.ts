@@ -3,7 +3,7 @@ import { type Lesson } from '@prisma/client';
 import prisma from '@/lib/prisma';
 
 export default class LessonRepository {
-  public async createLesson({
+  public async addLesson({
     name,
     lessonNo,
   }: Pick<Lesson, 'lessonNo' | 'name'>) {

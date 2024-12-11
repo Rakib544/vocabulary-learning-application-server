@@ -11,7 +11,7 @@ const userController = new UserController();
 /**
  * Create user body
  * @typedef {object} CreateUserBody
- * @property {string} email.required - email of user
+ * @property {string} email.required - email of rakib
  * @property {string} name.required - name of user
  * @property {string} cognitoId.required - cognito id
  * @property {string} phone - phone number
@@ -31,6 +31,7 @@ const userController = new UserController();
  * @param {CreateUserBody} request.body.required
  * @return {User} 201 - user created
  */
+
 users.get('/', verifyAuthToken, verifyAdmin, userController.getUsers);
 users.put(
   '/:id/role',
