@@ -19,4 +19,6 @@ auth.post(
   authController.login
 );
 
+auth.post('/refresh', authController.generateFreshToken);
+
 export default auth;

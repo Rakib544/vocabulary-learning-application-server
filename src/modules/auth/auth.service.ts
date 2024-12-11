@@ -1,13 +1,19 @@
 import { type User } from '@prisma/client';
 
+import UserRepository from '../users/users.repository';
 import AuthRepository from './auth.repository';
 
-import { HttpBadRequestError, HttpConflictError } from '@/lib/errors';
+import {
+  HttpBadRequestError,
+  HttpConflictError,
+  HttpForbiddenError,
+} from '@/lib/errors';
 import Jwt from '@/lib/jwt';
 import PasswordManager from '@/lib/password';
 
 export default class AuthService {
   private readonly authRepository = new AuthRepository();
+  private readonly useRepository = new UserRepository();
   private readonly passwordManager = new PasswordManager();
   private readonly jwt = new Jwt();
 
@@ -82,5 +88,26 @@ export default class AuthService {
       refreshToken,
       ...newUser,
     };
+  }
+
+  public async generateRefreshToken(token: string) {
+    try {
+      const { id } = this.jwt.verifyRefreshToken(token) as { id: string };
+      const user = await this.useRepository.getUser(id);
+      if (!user) {
+        throw new HttpForbiddenError('Invalid refresh token');
+      }
+      const accessToken = this.jwt.generateAccessToken({ id, role: user.role });
+      const refreshToken = this.jwt.generateRefreshToken(id);
+      return {
+        accessToken,
+        refreshToken,
+      };
+    } catch (e) {
+      if (e.name === 'TokenExpiredError') {
+        throw new HttpForbiddenError('Refresh token has expired');
+      }
+      throw new HttpForbiddenError('Invalid refresh token');
+    }
   }
 }

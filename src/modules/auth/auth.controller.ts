@@ -1,6 +1,6 @@
 import { type User } from '@prisma/client';
 import { HttpStatusCode } from 'axios';
-import { type NextFunction, type Request } from 'express';
+import { type NextFunction, type Request, type Response } from 'express';
 
 import AuthService from './auth.service';
 
@@ -36,6 +36,26 @@ export default class AuthController extends Api {
     try {
       const user = await this.authService.login(req.body);
       this.send(res, user, HttpStatusCode.Ok, 'Login successful');
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public generateFreshToken = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const tokens = await this.authService.generateRefreshToken(
+        req.body.refreshToken
+      );
+      this.send(
+        res,
+        tokens,
+        HttpStatusCode.Ok,
+        'Refresh Token generated successfully'
+      );
     } catch (e) {
       next(e);
     }
