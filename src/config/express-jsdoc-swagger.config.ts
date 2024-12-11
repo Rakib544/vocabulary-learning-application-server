@@ -1,5 +1,7 @@
 import * as path from 'path';
+
 import appConfig from './app.config';
+
 import environment from '@/lib/environment';
 
 const { env, port } = environment;
