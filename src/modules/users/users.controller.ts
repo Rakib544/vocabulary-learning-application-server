@@ -10,14 +10,28 @@ import { type CustomResponse } from '@/types/common.type';
 export default class UserController extends Api {
   private readonly userService = new UserService();
 
-  public createUser = async (
+  public getUsers = async (
+    _,
+    res: CustomResponse<User>,
+    next: NextFunction
+  ) => {
+    try {
+      const users = await this.userService.getUsers();
+      this.send(res, users, HttpStatusCode.Ok, 'getUsers');
+    } catch (e) {
+      next(e);
+    }
+  };
+
+  public updateRole = async (
     req: Request,
     res: CustomResponse<User>,
     next: NextFunction
   ) => {
     try {
-      const user = await this.userService.createUser(req.body);
-      this.send(res, user, HttpStatusCode.Created, 'createUser');
+      const id = req.params.id;
+      const user = await this.userService.updateRole(id, req.body.role);
+      this.send(res, user, HttpStatusCode.Ok, 'Users updated successfully');
     } catch (e) {
       next(e);
     }

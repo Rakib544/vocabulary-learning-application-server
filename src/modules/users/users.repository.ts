@@ -14,6 +14,10 @@ export default class UserRepository {
   }
 
   public async updateRole(id: string, role: UserRole) {
-    return await prisma.user.update({ where: { id }, data: { role } });
+    return await prisma.user.update({
+      where: { id },
+      data: { role },
+      select: { id: true, name: true, role: true },
+    });
   }
 }
