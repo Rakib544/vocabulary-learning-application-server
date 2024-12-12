@@ -24,7 +24,7 @@ export default class LessonService {
     return await this.lessonRepository.addLesson(lesson);
   }
 
-  public async getLessons(): Promise<Lesson[]> {
+  public async getLessons() {
     const lessons = await this.lessonRepository.getLessons();
     return lessons;
   }
