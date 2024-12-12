@@ -41,6 +41,18 @@ export default class VocabularyService {
     return await this.vocabularyRepository.getVocabularies();
   }
 
+  public async getVocabulary(id: string) {
+    const vocabulary = await this.vocabularyRepository.getVocabulary(id);
+
+    if (!vocabulary) {
+      throw new HttpNotFoundError('Vocabulary not found', [
+        'The vocabulary with the given ID does not exists',
+      ]);
+    }
+
+    return vocabulary;
+  }
+
   public async updateVocabulary(id: string, updatedData: Partial<Vocabulary>) {
     const vocabulary = await this.vocabularyRepository.getVocabulary(id);
     if (!vocabulary) {

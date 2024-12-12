@@ -4,6 +4,7 @@
   "description": "Vocabulary application for learning Japanese language.",
   "main": "index.ts",
   "scripts": {
+    "prepare": "is-ci || husky install",
     "prebuild": "npm run clean:build",
     "build": "npm run prisma:generate && tsc --build --verbose tsconfig.build.json && tsc-alias -p tsconfig.json",
     "start": "cross-env FORCE_COLOR=2 node ./dist/index.js",

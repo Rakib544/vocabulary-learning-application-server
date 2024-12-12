@@ -13,10 +13,21 @@ export default class LessonRepository {
 
   public async getLessons() {
     const lessons = await prisma.lesson.findMany({
-      include: { _count: { select: { vocabularies: true } } },
+      orderBy: {
+        lessonNo: 'asc',
+      },
+      include: {
+        _count: { select: { vocabularies: true } },
+      },
     });
 
-    return lessons;
+    return lessons.map((lesson) => {
+      const { _count, createdAt, updatedAt, ...rest } = lesson;
+      return {
+        ...rest,
+        totalVocabularies: _count.vocabularies,
+      };
+    });
   }
 
   public async getLesson(id: string) {

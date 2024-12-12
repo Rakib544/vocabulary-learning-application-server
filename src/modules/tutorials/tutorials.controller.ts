@@ -61,6 +61,25 @@ export default class TutorialController extends Api {
     }
   };
 
+  public getTutorial = async (
+    req: Request,
+    res: CustomResponse<Tutorial>,
+    next: NextFunction
+  ) => {
+    try {
+      const id = req.params.id;
+      const tutorial = await this.tutorialService.getTutorial(id);
+      this.send(
+        res,
+        tutorial,
+        HttpStatusCode.Ok,
+        'Tutorial fetched successfully'
+      );
+    } catch (e) {
+      next(e);
+    }
+  };
+
   public deleteTutorial = async (
     req: Request,
     res: CustomResponse<Tutorial>,

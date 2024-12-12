@@ -25,13 +25,24 @@ export default class VocabularyRepository {
         word: true,
         meaning: true,
         whenToSay: true,
+        pronunciation: true,
         lesson: { select: { lessonNo: true } },
       },
     });
   }
 
   public async getVocabulary(id: string) {
-    return await prisma.vocabulary.findUnique({ where: { id } });
+    return await prisma.vocabulary.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        word: true,
+        meaning: true,
+        pronunciation: true,
+        whenToSay: true,
+        lessonId: true,
+      },
+    });
   }
 
   public async updateVocabulary(id: string, updatedData: Partial<Vocabulary>) {

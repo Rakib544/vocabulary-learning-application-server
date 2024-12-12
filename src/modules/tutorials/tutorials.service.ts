@@ -15,6 +15,17 @@ export default class TutorialService {
     return await this.tutorialRepository.getTutorials();
   }
 
+  public async getTutorial(id: string) {
+    const tutorial = await this.tutorialRepository.getTutorial(id);
+
+    if (!tutorial) {
+      throw new HttpNotFoundError('Tutorial not found', [
+        'The tutorial with the given ID does not exists',
+      ]);
+    }
+    return tutorial;
+  }
+
   public async updateTutorial(id: string, updatedData: Tutorial) {
     const tutorial = await this.tutorialRepository.getTutorial(id);
     if (!tutorial) {

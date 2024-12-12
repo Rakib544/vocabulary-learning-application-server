@@ -17,7 +17,10 @@ export default class TutorialRepository {
   }
 
   public async getTutorial(id: string) {
-    return await prisma.tutorial.findUnique({ where: { id } });
+    return await prisma.tutorial.findUnique({
+      where: { id },
+      select: { id: true, title: true, url: true },
+    });
   }
 
   public async updateTutorial(id: string, updatedData: Tutorial) {

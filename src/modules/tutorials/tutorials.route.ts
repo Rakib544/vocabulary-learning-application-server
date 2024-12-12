@@ -17,6 +17,12 @@ tutorial.post(
   tutorialController.addTutorial
 );
 tutorial.get('/', verifyAuthToken, tutorialController.getTutorials);
+tutorial.get(
+  '/:id',
+  verifyAuthToken,
+  verifyAdmin,
+  tutorialController.getTutorial
+);
 tutorial.put(
   '/:id',
   verifyAuthToken,

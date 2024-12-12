@@ -22,6 +22,15 @@ vocabularies.get(
   verifyAdmin,
   vocabularyController.getVocabularies
 );
+
+vocabularies.get(
+  '/:id',
+  verifyAuthToken,
+  verifyAdmin,
+  RequestValidator.isValidObjectId(),
+  vocabularyController.getVocabulary
+);
+
 vocabularies.put(
   '/:id',
   verifyAuthToken,

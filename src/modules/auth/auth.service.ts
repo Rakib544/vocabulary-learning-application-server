@@ -50,6 +50,7 @@ export default class AuthService {
       id,
       role,
       name,
+      email,
       photoUrl,
     };
   }

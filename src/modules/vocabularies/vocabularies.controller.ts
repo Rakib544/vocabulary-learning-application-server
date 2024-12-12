@@ -49,6 +49,25 @@ export default class VocabularyController extends Api {
     }
   };
 
+  public getVocabulary = async (
+    req: Request,
+    res: CustomResponse<Vocabulary>,
+    next: NextFunction
+  ) => {
+    try {
+      const id = req.params.id;
+      const vocabulary = await this.vocabularyService.getVocabulary(id);
+      this.send(
+        res,
+        vocabulary,
+        HttpStatusCode.Ok,
+        'Vocabulary fetched successfully'
+      );
+    } catch (e) {
+      next(e);
+    }
+  };
+
   public updateVocabulary = async (
     req: Request,
     res: CustomResponse<Vocabulary>,
