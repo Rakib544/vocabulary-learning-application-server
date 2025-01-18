@@ -36,7 +36,7 @@ This repository contains the server-side implementation, including APIs for user
 
 ### Prerequisites
 
-- Node.js (v16+ recommended)
+- Node.js (v20+ recommended)
 - MongoDB
 - Prisma
 
